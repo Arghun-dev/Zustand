@@ -1,23 +1,29 @@
 import { useRef } from "react";
-import useStore from "./store";
+import { Switch } from "antd";
+import { useTodos } from "./store/todosStore";
+import { useTheme } from "./store/themeStore";
+import { v4 as uuid } from "uuid";
 import "./App.css";
+import "antd/dist/antd.css";
 
 function App() {
-  const { people, addPeople } = useStore((state) => state);
+  const { todos, addTodo, removeTodo, updateTodo } = useTodos();
+  const { darkMode, toggle } = useTheme();
   const inputRef = useRef();
 
   function add() {
-    addPeople(inputRef.current.value);
+    if (!inputRef.current.value) return;
+
+    addTodo({ text: inputRef.current.value, id: uuid() });
     inputRef.current.value = "";
   }
 
   return (
-    <div className="App">
-      <input type="text" ref={inputRef} />
-      <button onClick={add}>add people</button>
-      {people.map((p, i) => (
-        <div key={i}>{p}</div>
-      ))}
+    <div className={`App ${darkMode ? "darkMode" : "whiteMode"}`}>
+      <Switch defaultChecked onChange={(checked) => toggle(checked)} />
+      <input ref={inputRef} />
+      <button onClick={add}>Add</button>
+      {!!todos.length && todos.map((t) => <div key={t.id}>{t.text}</div>)}
     </div>
   );
 }
