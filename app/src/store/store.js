@@ -7,5 +7,5 @@ let stores = {
   useTheme,
 };
 
+devtools(stores);
 persist(stores);
-devtools(stores, { name: "store" });

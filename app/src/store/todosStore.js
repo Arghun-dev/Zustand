@@ -3,17 +3,17 @@ import create from "zustand";
 export const useTodos = create((set) => ({
   todos: [],
 
-  addTodo: (todo) => set((state) => ({ todos: [...state.todos, todo] })),
+  addTodo: (todo) => set(({ todos }) => ({ todos: [...todos, todo] })),
 
   removeTodo: (selectedTodo) =>
-    set((state) => ({
-      todos: state.todos.filter((todo) => todo.id !== selectedTodo),
+    set(({ todos }) => ({
+      todos: todos.filter((todo) => todo.id !== selectedTodo),
     })),
 
-  updateTodo: (selectedTodo, text) =>
-    set((state) =>
-      state.todos.map((todo) =>
-        todo.id === selectedTodo ? { ...todo, text } : todo
+  updateTodo: (selectedTodo, title) =>
+    set(({ todos }) =>
+      todos.map((todo) =>
+        todo.id === selectedTodo ? { ...todo, title } : todo
       )
     ),
 }));
